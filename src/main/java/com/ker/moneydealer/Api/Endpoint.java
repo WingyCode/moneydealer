@@ -75,14 +75,12 @@ public class Endpoint {
     @GET
     @Path("/accounts")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllAccounts() throws Exception {
+    public Response getAllAccounts() throws JsonProcessingException {
         try {
             initAccountManager();
             return Response.status(200).entity(mapper.writeValueAsString(this.acctManager.getAllAccounts())).build();
         } catch (SQLException e) {
             return getSqlErrorResponse(e.getMessage());
-        } catch (Exception e) {
-            throw e;
         }
     }
 
