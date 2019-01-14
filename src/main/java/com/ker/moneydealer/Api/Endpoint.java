@@ -84,6 +84,21 @@ public class Endpoint {
         }
     }
 
+    @GET
+    @Path("/accounts/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAccount(@PathParam("id") int id) throws JsonProcessingException {
+        try {
+            initAccountManager();
+            return Response.status(200).entity(mapper.writeValueAsString(this.acctManager.getAccount(id).getAccount())).build();
+        } catch (SQLException e) {
+            return getSqlErrorResponse(e.getMessage());
+        }
+        catch (IllegalArgumentException ex){
+            return  getIllegalArgumentResponse(id, ex.getMessage());
+        }
+    }
+    
     @POST
     @Path("/accounts")
     @Consumes(MediaType.APPLICATION_JSON)
